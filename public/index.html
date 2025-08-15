@@ -16,37 +16,38 @@
         </h1>
 
         <!-- Add Task Form -->
-        <div class="mb-10 flex flex-col sm:flex-row gap-4">
-            <input type="text" placeholder="Enter a new task" class="flex-1 p-3 border border-gray-200 rounded-xl bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-800 placeholder-gray-400 transition duration-300">
-            <select class="p-3 border border-gray-200 rounded-xl bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-800 sm:w-36 w-full">
+        <div class="mb-10 flex flex-col sm:flex-row gap-4 rounded-xl overflow-hidden bg-white">
+            <select class="p-3 bg-white outline-none text-gray-800 sm:w-36 w-full" data-set-priority>
                 <option value="low">Low Priority</option>
                 <option value="medium">Medium Priority</option>
                 <option value="high">High Priority</option>
             </select>
-            <input type="date" class="p-3 border border-gray-200 rounded-xl bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-800 sm:w-44 w-full">
-            <button class="bg-teal-600 text-white px-6 py-3 rounded-xl hover:bg-teal-700 transition duration-300 shadow-md sm:w-auto w-full">
+            <input data-set-title type="text" placeholder="Enter a new task" class="flex-1 p-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 transition duration-300 outline-none border-none">
+            <input data-set-date type="date" class="p-3 bg-white shadow-md text-gray-800 sm:w-44 w-full outline-none border-none">
+
+            <button data-add-task class="bg-teal-600 text-white px-6 py-3 rounded-xl hover:bg-teal-700 transition duration-300 shadow-md sm:w-auto w-full">
                 Add Task
             </button>
         </div>
 
         <!-- Filters -->
-        <div class="mb-10 flex flex-wrap justify-center gap-3">
-            <button class="px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
+        <div class="mb-10 flex flex-wrap justify-center gap-3" data-filter-parent>
+            <button data-filter="all" class="filter-active px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
                 All
             </button>
-            <button class="px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
+            <button data-filter="completed" class="px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
                 Completed
             </button>
-            <button class="px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
+            <button data-filter="Pending" class="px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
                 Pending
             </button>
-            <button class="px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
+            <button data-filter="high" class="px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
                 High Priority
             </button>
-            <button class="px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
+            <button data-filter="medium" class="px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
                 Medium Priority
             </button>
-            <button class="px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
+            <button data-filter="low" class="px-5 py-2 bg-white text-gray-700 rounded-xl shadow-sm hover:bg-teal-100 hover:text-teal-700 transition duration-300">
                 Low Priority
             </button>
         </div>
