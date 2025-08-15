@@ -35,7 +35,7 @@ class TaskManager {
     this._tasks = new AllTasks();
 
     setterElements.addTask?.addEventListener("click", () => {
-      // this.addNewTask();
+      this.addNewTask();
     });
   }
 
