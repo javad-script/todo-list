@@ -1,89 +1,89 @@
-const setterElements: SetterElementsInterface = {
-  prioritySetter: document.querySelector("[data-set-priority]"),
-  titleSetter: document.querySelector("[data-set-title]"),
-  dateSetter: document.querySelector("[data-set-date]"),
-  addTask: document.querySelector("[data-add-task]"),
+const uiSelectors: UiSelectorsType = {
+  prioritySelect: document.querySelector("[data-set-priority]"),
+  titleInput: document.querySelector("[data-set-title]"),
+  dateInput: document.querySelector("[data-set-date]"),
+  addTaskBtn: document.querySelector("[data-add-task]"),
 };
-interface SetterElementsInterface {
-  prioritySetter: HTMLSelectElement | null;
-  titleSetter: HTMLInputElement | null;
-  dateSetter: HTMLInputElement | null;
-  addTask: HTMLInputElement | null;
+
+interface UiSelectorsType {
+  prioritySelect: HTMLSelectElement | null;
+  titleInput: HTMLInputElement | null;
+  dateInput: HTMLInputElement | null;
+  addTaskBtn: HTMLInputElement | null;
 }
 
-class AllTasks {
-  [allTasks: number]: Task;
+class TaskCollection {
+  [index: number]: TaskType;
 }
 
-interface Task {
+interface TaskType {
   readonly id: number;
   text: string;
   completed: boolean;
-  priority: Priority;
+  priority: TaskPriority;
   dueDate: Date;
 }
 
-enum Priority {
+enum TaskPriority {
   low = "low",
   medium = "medium",
   high = "high",
 }
 
-class TaskManager {
-  protected _tasks: any;
-  constructor() {
-    this._tasks = new AllTasks();
-    this.readTasksFromLocalstorage();
+class TaskController {
+  protected _taskList: any;
 
-    setterElements.addTask?.addEventListener("click", () => {
-      this.addNewTask();
+  constructor() {
+    this._taskList = new TaskCollection();
+    this.loadFromLocal();
+
+    uiSelectors.addTaskBtn?.addEventListener("click", () => {
+      this.createTask();
     });
   }
 
-  addNewTask(): void {
-    const data = this.validateSetterValues();
-    const cratedTask: Task = {
-      id: this.tasksLength,
+  createTask(): void {
+    const validated = this.validateInputs();
+    const newTask: TaskType = {
+      id: this.totalTasks,
       completed: false,
-      text: data.title,
-      priority: data.priority,
-      dueDate: data.date,
+      text: validated.title,
+      priority: validated.priority,
+      dueDate: validated.date,
     };
-    this._tasks[this.tasksLength] = cratedTask;
-    this.saveTasksToLocalStorage();
-    this.renderTasks();
+    this._taskList[this.totalTasks] = newTask;
+    this.saveToLocal();
+    this.displayTasks();
   }
 
-  saveTasksToLocalStorage(): void {
-    localStorage.setItem("tasks", JSON.stringify(this._tasks));
+  saveToLocal(): void {
+    localStorage.setItem("tasks", JSON.stringify(this._taskList));
   }
 
-  readTasksFromLocalstorage() {
-    const readTasks: string | null = localStorage.getItem("tasks");
-    if (!readTasks) return;
-    if (typeof readTasks !== "string") {
-      throw new Error(
-        "LocalStorage has Error . We can not read you Browser LocalStorage"
-      );
+  loadFromLocal() {
+    const stored: string | null = localStorage.getItem("tasks");
+    if (!stored) return;
+    if (typeof stored !== "string") {
+      throw new Error("LocalStorage Error: cannot read data");
     }
-    this._tasks = JSON.parse(readTasks);
+    this._taskList = JSON.parse(stored);
   }
 
-  renderTasks(): void {
-    console.log(this._tasks);
+  displayTasks(): void {
+    console.log(this._taskList);
   }
-  getSetterValues() {
-    const { prioritySetter, titleSetter, dateSetter } = setterElements;
-    const values = {
-      title: titleSetter?.value,
-      priority: prioritySetter?.value,
-      date: dateSetter?.value,
+
+  getInputs() {
+    const { prioritySelect, titleInput, dateInput } = uiSelectors;
+    return {
+      title: titleInput?.value,
+      priority: prioritySelect?.value,
+      date: dateInput?.value,
     };
-    return values;
   }
 
-  validateSetterValues() {
-    const values = this.getSetterValues();
+  validateInputs() {
+    const values = this.getInputs();
     const title: string =
       typeof values.title === "string" && values.title.length >= 1
         ? values.title
@@ -92,20 +92,17 @@ class TaskManager {
       typeof values.date === "string" ? new Date(values.date) : new Date();
     console.log(date instanceof Date, date);
 
-    const priority: Priority =
+    const priority: TaskPriority =
       typeof values.priority === "string" && values.priority.length >= 1
-        ? Priority[values.priority as Priority]
-        : Priority.low;
+        ? TaskPriority[values.priority as TaskPriority]
+        : TaskPriority.low;
 
-    return {
-      title: title,
-      date: date,
-      priority: priority,
-    };
+    return { title, date, priority };
   }
-  get tasksLength(): number {
-    return Object.keys(this._tasks).length;
+
+  get totalTasks(): number {
+    return Object.keys(this._taskList).length;
   }
 }
 
-new TaskManager();
+new TaskController();
