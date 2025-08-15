@@ -16,7 +16,9 @@ class TaskManager {
     _tasks;
     constructor() {
         this._tasks = new AllTasks();
+        this.readTasksFromLocalstorage();
         setterElements.addTask?.addEventListener("click", () => {
+            this.addNewTask();
         });
     }
     addNewTask() {
@@ -34,6 +36,15 @@ class TaskManager {
     }
     saveTasksToLocalStorage() {
         localStorage.setItem("tasks", JSON.stringify(this._tasks));
+    }
+    readTasksFromLocalstorage() {
+        const readTasks = localStorage.getItem("tasks");
+        if (!readTasks)
+            return;
+        if (typeof readTasks !== "string") {
+            throw new Error("LocalStorage has Error . We can not read you Browser LocalStorage");
+        }
+        this._tasks = JSON.parse(readTasks);
     }
     renderTasks() {
         console.log(this._tasks);
