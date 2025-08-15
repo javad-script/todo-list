@@ -49,8 +49,12 @@ class TaskManager {
       dueDate: data.date,
     };
     this._tasks[this.tasksLength] = cratedTask;
-
+    this.saveTasksToLocalStorage();
     this.renderTasks();
+  }
+
+  saveTasksToLocalStorage(): void {
+    localStorage.setItem("tasks", JSON.stringify(this._tasks));
   }
 
   renderTasks(): void {
