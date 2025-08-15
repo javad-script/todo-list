@@ -1,0 +1,48 @@
+{
+  "name": "todo-list",
+  "version": "0.0.1",
+  "description": "A simple, responsive To-Do List UI with Tailwind CSS, featuring priority, expire date, and category fields. English, LTR, minimal, and modern design.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tail": "npx @tailwindcss/cli -i ./src/input.css -o ./public/assets/styles/style.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javad-script/todo-list.git"
+  },
+  "keywords": [
+    "sticky-tasks",
+    "tasks-app",
+    "modern-ui",
+    "minimal-design",
+    "easy-to-use",
+    "productivity",
+    "task-taking",
+    "web-app",
+    "JavaScript",
+    "TailwindCSS",
+    "responsive",
+    "memo",
+    "task-manager",
+    "clean-interface",
+    "fast",
+    "organize",
+    "to-do",
+    "reminder",
+    "todo"
+  ],
+  "author": "javad-script",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/javad-script/todo-list/issues"
+  },
+  "homepage": "https://github.com/javad-script/todo-list#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.12",
+    "tailwindcss": "^4.1.12"
+  },
+  "devDependencies": {
+    "tsc": "^2.0.4"
+  }
+}

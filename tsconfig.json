@@ -1,0 +1,20 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./public/assets/scripts/",
+    "allowJs": false, // allow js in root dir
+    "target": "esnext", // target ecmascript version
+    "sourceMap": true, // make source map
+    "removeComments": true, // remove comments on output file
+    "noEmitOnError": true, // if we has error don't build the output file
+    "strict": false, // strict mode
+    "strictNullChecks": true, // this check the data is not null
+    "noImplicitAny": true, // when we declare a variable but don't set value or type . know it as error (any type)
+    "noUnusedParameters": true, // show a warning if you declare a parameter in function but you never used that on continues
+    "noImplicitReturns": true, // show a warning the don't return any thing in all of code . for example if (income > 2_000) return income * 2;
+    "noUnusedLocals": true, // show a warning if you declared a variable but you never used that on continues
+    "allowUnreachableCode": false, // turn it false to warning when a loop isn't ends
+    "noImplicitOverride": true // show a warning : you forgot to use override keyword in class
+  }
+}
