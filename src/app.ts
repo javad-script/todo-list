@@ -9,12 +9,10 @@ interface UiSelectorsType {
   prioritySelect: HTMLSelectElement | null;
   titleInput: HTMLInputElement | null;
   dateInput: HTMLInputElement | null;
-  addTaskBtn: HTMLInputElement | null;
+  addTaskBtn: HTMLButtonElement | null;
 }
 
-class TaskCollection {
-  [index: number]: TaskType;
-}
+type TaskCollection = Record<number, TaskType>;
 
 interface TaskType {
   readonly id: number;
@@ -31,10 +29,9 @@ enum TaskPriority {
 }
 
 class TaskController {
-  protected _taskList: any;
+  protected _taskList: TaskCollection;
 
   constructor() {
-    this._taskList = new TaskCollection();
     this.loadFromLocal();
 
     uiSelectors.addTaskBtn?.addEventListener("click", () => {
@@ -44,14 +41,16 @@ class TaskController {
 
   createTask(): void {
     const validated = this.validateInputs();
+    if (!validated) return;
+    const id = Date.now() + Math.floor(Math.random() * 1000);
     const newTask: TaskType = {
-      id: this.totalTasks,
+      id: id,
       completed: false,
       text: validated.title,
       priority: validated.priority,
       dueDate: validated.date,
     };
-    this._taskList[this.totalTasks] = newTask;
+    this._taskList[id] = newTask;
     this.saveToLocal();
     this.displayTasks();
   }
@@ -59,14 +58,17 @@ class TaskController {
   saveToLocal(): void {
     localStorage.setItem("tasks", JSON.stringify(this._taskList));
   }
-
   loadFromLocal() {
     const stored: string | null = localStorage.getItem("tasks");
+
     if (!stored) return;
     if (typeof stored !== "string") {
       throw new Error("LocalStorage Error: cannot read data");
     }
-    this._taskList = JSON.parse(stored);
+
+    const storedObject: TaskCollection = JSON.parse(stored);
+
+    this._taskList = storedObject;
   }
 
   displayTasks(): void {
@@ -89,19 +91,17 @@ class TaskController {
         ? values.title
         : "buy coffee";
     const date: Date =
-      typeof values.date === "string" ? new Date(values.date) : new Date();
-    console.log(date instanceof Date, date);
+      typeof values.date === "string" && !isNaN(new Date(values.date).getTime())
+        ? new Date(values.date)
+        : new Date();
 
+    values.priority = values.priority?.toLocaleLowerCase();
     const priority: TaskPriority =
       typeof values.priority === "string" && values.priority.length >= 1
         ? TaskPriority[values.priority as TaskPriority]
         : TaskPriority.low;
 
     return { title, date, priority };
-  }
-
-  get totalTasks(): number {
-    return Object.keys(this._taskList).length;
   }
 }
 

@@ -4,8 +4,6 @@ const uiSelectors = {
     dateInput: document.querySelector("[data-set-date]"),
     addTaskBtn: document.querySelector("[data-add-task]"),
 };
-class TaskCollection {
-}
 var TaskPriority;
 (function (TaskPriority) {
     TaskPriority["low"] = "low";
@@ -15,7 +13,6 @@ var TaskPriority;
 class TaskController {
     _taskList;
     constructor() {
-        this._taskList = new TaskCollection();
         this.loadFromLocal();
         uiSelectors.addTaskBtn?.addEventListener("click", () => {
             this.createTask();
@@ -23,14 +20,17 @@ class TaskController {
     }
     createTask() {
         const validated = this.validateInputs();
+        if (!validated)
+            return;
+        const id = Date.now() + Math.floor(Math.random() * 1000);
         const newTask = {
-            id: this.totalTasks,
+            id: id,
             completed: false,
             text: validated.title,
             priority: validated.priority,
             dueDate: validated.date,
         };
-        this._taskList[this.totalTasks] = newTask;
+        this._taskList[id] = newTask;
         this.saveToLocal();
         this.displayTasks();
     }
@@ -44,7 +44,8 @@ class TaskController {
         if (typeof stored !== "string") {
             throw new Error("LocalStorage Error: cannot read data");
         }
-        this._taskList = JSON.parse(stored);
+        const storedObject = JSON.parse(stored);
+        this._taskList = storedObject;
     }
     displayTasks() {
         console.log(this._taskList);
@@ -62,15 +63,14 @@ class TaskController {
         const title = typeof values.title === "string" && values.title.length >= 1
             ? values.title
             : "buy coffee";
-        const date = typeof values.date === "string" ? new Date(values.date) : new Date();
-        console.log(date instanceof Date, date);
+        const date = typeof values.date === "string" && !isNaN(new Date(values.date).getTime())
+            ? new Date(values.date)
+            : new Date();
+        values.priority = values.priority?.toLocaleLowerCase();
         const priority = typeof values.priority === "string" && values.priority.length >= 1
             ? TaskPriority[values.priority]
             : TaskPriority.low;
         return { title, date, priority };
-    }
-    get totalTasks() {
-        return Object.keys(this._taskList).length;
     }
 }
 new TaskController();
