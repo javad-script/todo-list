@@ -19,10 +19,17 @@ class UiHandler {
     }
     getInputs() {
         const { prioritySelect, titleInput, dateInput } = uiSelectors;
+        if (titleInput?.closest("form")?.checkValidity()) {
+            return {
+                title: titleInput?.value,
+                priority: prioritySelect?.value,
+                date: dateInput?.value,
+            };
+        }
         return {
-            title: titleInput?.value,
-            priority: prioritySelect?.value,
-            date: dateInput?.value,
+            title: null,
+            priority: null,
+            date: null,
         };
     }
 }

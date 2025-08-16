@@ -10,6 +10,8 @@ const uiSelectors = {
 const controller = new TaskController();
 uiSelectors.addTaskBtn?.addEventListener("click", () => {
     const { title, priority, date } = UiHandler.getInputs();
+    if (!title || !priority || !date)
+        return;
     controller.createTask(title || "", date || "", priority || "");
     UiHandler.render(controller.getTasks());
 });
