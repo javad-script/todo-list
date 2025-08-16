@@ -1,77 +1,17 @@
+import TaskController from "./taskController.js";
+import UiHandler from "./UiHandler.js";
 const uiSelectors = {
     prioritySelect: document.querySelector("[data-set-priority]"),
     titleInput: document.querySelector("[data-set-title]"),
     dateInput: document.querySelector("[data-set-date]"),
     addTaskBtn: document.querySelector("[data-add-task]"),
+    taskList: document.getElementById("taskList"),
 };
-var TaskPriority;
-(function (TaskPriority) {
-    TaskPriority["low"] = "low";
-    TaskPriority["medium"] = "medium";
-    TaskPriority["high"] = "high";
-})(TaskPriority || (TaskPriority = {}));
-class TaskController {
-    _taskList;
-    constructor() {
-        this.loadFromLocal();
-        uiSelectors.addTaskBtn?.addEventListener("click", () => {
-            this.createTask();
-        });
-    }
-    createTask() {
-        const validated = this.validateInputs();
-        if (!validated)
-            return;
-        const id = Date.now() + Math.floor(Math.random() * 1000);
-        const newTask = {
-            id: id,
-            completed: false,
-            text: validated.title,
-            priority: validated.priority,
-            dueDate: validated.date,
-        };
-        this._taskList[id] = newTask;
-        this.saveToLocal();
-        this.displayTasks();
-    }
-    saveToLocal() {
-        localStorage.setItem("tasks", JSON.stringify(this._taskList));
-    }
-    loadFromLocal() {
-        const stored = localStorage.getItem("tasks");
-        if (!stored)
-            return;
-        if (typeof stored !== "string") {
-            throw new Error("LocalStorage Error: cannot read data");
-        }
-        const storedObject = JSON.parse(stored);
-        this._taskList = storedObject;
-    }
-    displayTasks() {
-        console.log(this._taskList);
-    }
-    getInputs() {
-        const { prioritySelect, titleInput, dateInput } = uiSelectors;
-        return {
-            title: titleInput?.value,
-            priority: prioritySelect?.value,
-            date: dateInput?.value,
-        };
-    }
-    validateInputs() {
-        const values = this.getInputs();
-        const title = typeof values.title === "string" && values.title.length >= 1
-            ? values.title
-            : "buy coffee";
-        const date = typeof values.date === "string" && !isNaN(new Date(values.date).getTime())
-            ? new Date(values.date)
-            : new Date();
-        values.priority = values.priority?.toLocaleLowerCase();
-        const priority = typeof values.priority === "string" && values.priority.length >= 1
-            ? TaskPriority[values.priority]
-            : TaskPriority.low;
-        return { title, date, priority };
-    }
-}
-new TaskController();
+const controller = new TaskController();
+uiSelectors.addTaskBtn?.addEventListener("click", () => {
+    const { title, priority, date } = UiHandler.getInputs();
+    controller.createTask(title || "", date || "", priority || "");
+    UiHandler.render(controller.getTasks());
+});
+UiHandler.render(controller.getTasks());
 //# sourceMappingURL=app.js.map
