@@ -13,7 +13,13 @@ uiSelectors.addTaskBtn?.addEventListener("click", () => {
     if (!title || !priority || !date)
         return;
     controller.createTask(title || "", date || "", priority || "");
-    UiHandler.render(controller.getTasks());
 });
 UiHandler.render(controller.getTasks());
+uiSelectors.taskList?.addEventListener("click", (e) => {
+    const target = e.target;
+    if (!(target?.tagName === "BUTTON"))
+        return;
+    const id = Number(target.getAttribute("data-id"));
+    controller.deleteTask(id);
+});
 //# sourceMappingURL=app.js.map

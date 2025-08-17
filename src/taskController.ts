@@ -1,4 +1,5 @@
 import { TaskCollection, TaskType, TaskPriority } from "./task.js";
+import UiHandler from "./UiHandler.js";
 
 class TaskController {
   protected _taskList: TaskCollection = {};
@@ -28,11 +29,18 @@ class TaskController {
 
   saveToLocal(): void {
     localStorage.setItem("tasks", JSON.stringify(this._taskList));
+    UiHandler.render(this._taskList);
   }
 
   loadFromLocal(): void {
     const stored = localStorage.getItem("tasks");
     this._taskList = stored ? JSON.parse(stored) : {};
+    UiHandler.render(this._taskList);
+  }
+
+  deleteTask(taskId: number) {
+    delete this._taskList[taskId];
+    this.saveToLocal();
   }
 }
 

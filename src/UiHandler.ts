@@ -47,9 +47,7 @@ class UiHandler {
   createTaskElement(key: TaskType): string {
     const elem: string = `
     
-    <li data-id="${
-      key.id
-    }" class="flex items-center justify-between p-5 bg-white rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition duration-300">
+    <li class="flex items-center justify-between p-5 bg-white rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition duration-300">
                 <div class="flex items-center gap-4">
                     <input type="checkbox" class="h-5 w-5 text-teal-500 rounded focus:ring-teal-500">
                     <div>
@@ -64,7 +62,9 @@ class UiHandler {
                         </div>
                     </div>
                 </div>
-                <button class="text-red-500 hover:text-red-600 transition duration-200">Delete</button>
+                <button data-id="${
+                  key.id
+                }" class="text-red-500 hover:text-red-600 transition duration-200">Delete</button>
             </li>
 
 
