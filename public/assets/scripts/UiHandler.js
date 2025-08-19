@@ -37,7 +37,8 @@ class UiHandler {
     
     <li class="flex items-center justify-between p-5 bg-white rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition duration-300">
                 <div class="flex items-center gap-4">
-                    <input type="checkbox" class="h-5 w-5 text-teal-500 rounded focus:ring-teal-500">
+                                <input data-id="${key.id}" type="checkbox" ${key.completed ? "checked" : ""} class="h-5 w-5 text-teal-500 rounded focus:ring-teal-500">
+
                     <div>
                         <span class="text-gray-800 font-medium">${key.text}</span>
                         <div class="text-sm text-gray-500">

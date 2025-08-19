@@ -20,6 +20,7 @@ class TaskController {
     };
     this._taskList[id] = newTask;
     this.saveToLocal();
+    this.updateUi();
     return newTask;
   }
 
@@ -29,18 +30,26 @@ class TaskController {
 
   saveToLocal(): void {
     localStorage.setItem("tasks", JSON.stringify(this._taskList));
-    UiHandler.render(this._taskList);
   }
 
   loadFromLocal(): void {
     const stored = localStorage.getItem("tasks");
     this._taskList = stored ? JSON.parse(stored) : {};
-    UiHandler.render(this._taskList);
+    this.updateUi();
   }
 
   deleteTask(taskId: number) {
     delete this._taskList[taskId];
     this.saveToLocal();
+    this.updateUi();
+  }
+
+  checkTasks(taskId: number, isComplete: boolean) {
+    this._taskList[taskId].completed = isComplete;
+    this.saveToLocal();
+  }
+  updateUi(): void {
+    UiHandler.render(this._taskList);
   }
 }
 

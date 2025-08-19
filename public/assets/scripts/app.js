@@ -9,6 +9,9 @@ const uiSelectors = {
 };
 const controller = new TaskController();
 uiSelectors.addTaskBtn?.addEventListener("click", () => {
+    uiSelectors.addTaskBtn?.closest("form")?.addEventListener("submit", (e) => {
+        e.preventDefault();
+    });
     const { title, priority, date } = UiHandler.getInputs();
     if (!title || !priority || !date)
         return;
@@ -17,9 +20,15 @@ uiSelectors.addTaskBtn?.addEventListener("click", () => {
 UiHandler.render(controller.getTasks());
 uiSelectors.taskList?.addEventListener("click", (e) => {
     const target = e.target;
-    if (!(target?.tagName === "BUTTON"))
-        return;
-    const id = Number(target.getAttribute("data-id"));
-    controller.deleteTask(id);
+    if (target?.tagName === "BUTTON") {
+        const id = Number(target.getAttribute("data-id"));
+        controller.deleteTask(id);
+    }
+    else if (target?.tagName === "INPUT" &&
+        target.getAttribute("type") === "checkbox") {
+        const target = e.target;
+        const id = Number(target.getAttribute("data-id"));
+        controller.checkTasks(id, target.checked);
+    }
 });
 //# sourceMappingURL=app.js.map
