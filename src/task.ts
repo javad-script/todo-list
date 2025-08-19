@@ -26,4 +26,5 @@ export interface UiSelectorsType {
   dateInput: HTMLInputElement | null;
   addTaskBtn: HTMLButtonElement | null;
   taskList: HTMLElement | null;
+  filterParent: NodeListOf<HTMLButtonElement> | undefined;
 }

@@ -30,10 +30,7 @@ uiSelectors.taskList?.addEventListener("click", (e) => {
 document
     .querySelector("[data-filter-parent]")
     ?.addEventListener("click", (e) => {
-    const target = e.target;
-    if (target.tagName === "A") {
-        const dataFilter = target.getAttribute("data-filter");
-        controller.filterTasksManager(dataFilter);
-    }
+    const dataFilter = UiHandler.filterButtonsHandler(e);
+    controller.filterTasksManager(dataFilter ? dataFilter : null);
 });
 //# sourceMappingURL=app.js.map

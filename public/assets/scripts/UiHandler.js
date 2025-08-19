@@ -5,6 +5,9 @@ const uiSelectors = {
     dateInput: document.querySelector("[data-set-date]"),
     addTaskBtn: document.querySelector("[data-add-task]"),
     taskList: document.getElementById("taskList"),
+    filterParent: document
+        .querySelector("[data-filter-parent]")
+        ?.querySelectorAll("button"),
 };
 class UiHandler {
     render(tasks) {
@@ -61,6 +64,17 @@ class UiHandler {
             month: "short",
             day: "numeric",
         });
+    }
+    filterButtonsHandler(e) {
+        const target = e.target;
+        if (!(target.tagName === "BUTTON"))
+            return;
+        const dataFilter = target.getAttribute("data-filter");
+        uiSelectors.filterParent?.forEach((button) => {
+            button.classList.remove("filter-active");
+        });
+        target.classList.add("filter-active");
+        return dataFilter ?? undefined;
     }
 }
 export default new UiHandler();

@@ -11,6 +11,9 @@ const uiSelectors: UiSelectorsType = {
   dateInput: document.querySelector("[data-set-date]"),
   addTaskBtn: document.querySelector("[data-add-task]"),
   taskList: document.getElementById("taskList"),
+  filterParent: document
+    .querySelector("[data-filter-parent]")
+    ?.querySelectorAll("button"),
 };
 
 class UiHandler {
@@ -79,6 +82,19 @@ class UiHandler {
       month: "short",
       day: "numeric",
     });
+  }
+
+  filterButtonsHandler(e: Event): string | undefined {
+    const target = e.target as HTMLElement;
+    if (!(target.tagName === "BUTTON")) return;
+
+    const dataFilter = target.getAttribute("data-filter");
+
+    uiSelectors.filterParent?.forEach((button) => {
+      button.classList.remove("filter-active");
+    });
+    target.classList.add("filter-active");
+    return dataFilter ?? undefined;
   }
 }
 
