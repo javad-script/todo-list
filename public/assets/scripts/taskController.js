@@ -28,6 +28,7 @@ class TaskController {
     loadFromLocal() {
         const stored = localStorage.getItem("tasks");
         this._taskList = stored ? JSON.parse(stored) : {};
+        console.log(this._taskList);
         this.updateUi();
     }
     deleteTask(taskId) {
@@ -39,8 +40,39 @@ class TaskController {
         this._taskList[taskId].completed = isComplete;
         this.saveToLocal();
     }
-    updateUi() {
-        UiHandler.render(this._taskList);
+    updateUi(tasklist = this._taskList) {
+        UiHandler.render(tasklist);
+    }
+    filterTasksManager(filterType) {
+        if (filterType === "all") {
+            this.updateUi();
+            return;
+        }
+        if (TaskPriority[filterType]) {
+            const filterBy = TaskPriority[filterType];
+            this.filterByPriority(filterBy);
+            return;
+        }
+        this.filterByCompletion(filterType);
+    }
+    filterByPriority(filterBy) {
+        const filteredByPriority = Object.entries(this._taskList).filter((data) => data[1].priority === filterBy);
+        let convertedToObject = {};
+        for (const item of filteredByPriority) {
+            let id = item[1].id;
+            convertedToObject[id] = item[1];
+        }
+        this.updateUi(convertedToObject);
+    }
+    filterByCompletion(filterBy) {
+        const completion = filterBy === "completed" ? true : filterBy === "pending" ? false : null;
+        const filteredByCompletion = Object.entries(this._taskList).filter(([_, task]) => task.completed === completion);
+        let convertedToObject = {};
+        for (const item of filteredByCompletion) {
+            let id = item[1].id;
+            convertedToObject[id] = item[1];
+        }
+        this.updateUi(convertedToObject);
     }
 }
 export default TaskController;

@@ -27,4 +27,13 @@ uiSelectors.taskList?.addEventListener("click", (e) => {
         controller.checkTasks(id, target.checked);
     }
 });
+document
+    .querySelector("[data-filter-parent]")
+    ?.addEventListener("click", (e) => {
+    const target = e.target;
+    if (target.tagName === "A") {
+        const dataFilter = target.getAttribute("data-filter");
+        controller.filterTasksManager(dataFilter);
+    }
+});
 //# sourceMappingURL=app.js.map
