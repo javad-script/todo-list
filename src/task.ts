@@ -19,3 +19,11 @@ export const priorityClasses: Record<string, string> = {
   medium: "bg-yellow-200 text-yellow-800",
   low: "bg-green-200 text-green-800",
 };
+
+export interface UiSelectorsType {
+  prioritySelect: HTMLSelectElement | null;
+  titleInput: HTMLInputElement | null;
+  dateInput: HTMLInputElement | null;
+  addTaskBtn: HTMLButtonElement | null;
+  taskList: HTMLElement | null;
+}

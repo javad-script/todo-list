@@ -2,47 +2,40 @@ import TaskController from "./taskController.js";
 import UiHandler from "./UiHandler.js";
 
 interface UiSelectorsType {
-  prioritySelect: HTMLSelectElement | null;
-  titleInput: HTMLInputElement | null;
-  dateInput: HTMLInputElement | null;
   addTaskBtn: HTMLButtonElement | null;
   taskList: HTMLElement | null;
 }
 
 const uiSelectors: UiSelectorsType = {
-  prioritySelect: document.querySelector("[data-set-priority]"),
-  titleInput: document.querySelector("[data-set-title]"),
-  dateInput: document.querySelector("[data-set-date]"),
   addTaskBtn: document.querySelector("[data-add-task]"),
   taskList: document.getElementById("taskList"),
 };
 
 const controller = new TaskController();
 
-uiSelectors.addTaskBtn?.addEventListener("click", () => {
-  uiSelectors.addTaskBtn?.closest("form")?.addEventListener("submit", (e) => {
-    e.preventDefault();
-  });
+uiSelectors.addTaskBtn?.closest("form")?.addEventListener("submit", (e) => {
+  e.preventDefault();
+});
 
+uiSelectors.addTaskBtn?.addEventListener("click", () => {
   const { title, priority, date } = UiHandler.getInputs();
   if (!title || !priority || !date) return;
 
   controller.createTask(title || "", date || "", priority || "");
 });
 
-UiHandler.render(controller.getTasks());
-
 uiSelectors.taskList?.addEventListener("click", (e) => {
-  const target = e.target as HTMLElement;
-  if (target?.tagName === "BUTTON") {
-    const id: number = Number(target.getAttribute("data-id"));
+  const target = e.target as HTMLInputElement;
+  const targetWrapper = target.closest("li") as HTMLElement;
+  const id: number = Number(targetWrapper.getAttribute("data-id"));
+
+  if (!(target?.tagName === "INPUT") || !id || !target) return;
+
+  if (target.getAttribute("type") === "button") {
     controller.deleteTask(id);
-  } else if (
-    target?.tagName === "INPUT" &&
-    target.getAttribute("type") === "checkbox"
-  ) {
-    const target = e.target as HTMLInputElement;
-    const id: number = Number(target.getAttribute("data-id"));
+  }
+
+  if (target.getAttribute("type") === "checkbox") {
     controller.checkTasks(id, target.checked);
   }
 });

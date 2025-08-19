@@ -1,12 +1,9 @@
-import { TaskCollection, TaskType, priorityClasses } from "./task.js";
-
-interface UiSelectorsType {
-  prioritySelect: HTMLSelectElement | null;
-  titleInput: HTMLInputElement | null;
-  dateInput: HTMLInputElement | null;
-  addTaskBtn: HTMLButtonElement | null;
-  taskList: HTMLElement | null;
-}
+import {
+  TaskCollection,
+  TaskType,
+  priorityClasses,
+  UiSelectorsType,
+} from "./task.js";
 
 const uiSelectors: UiSelectorsType = {
   prioritySelect: document.querySelector("[data-set-priority]"),
@@ -47,11 +44,13 @@ class UiHandler {
   createTaskElement(key: TaskType): string {
     const elem: string = `
     
-    <li class="flex items-center justify-between p-5 bg-white rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition duration-300">
+    <li data-id="${
+      key.id
+    }" class="flex items-center justify-between p-5 bg-white rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition duration-300">
                 <div class="flex items-center gap-4">
-                                <input data-id="${key.id}" type="checkbox" ${
-      key.completed ? "checked" : ""
-    } class="h-5 w-5 text-teal-500 rounded focus:ring-teal-500">
+                                <input type="checkbox" ${
+                                  key.completed ? "checked" : ""
+                                } class="h-5 w-5 text-teal-500 rounded focus:ring-teal-500">
 
                     <div>
                         <span class="text-gray-800 font-medium">${
@@ -65,9 +64,7 @@ class UiHandler {
                         </div>
                     </div>
                 </div>
-                <button data-id="${
-                  key.id
-                }" class="text-red-500 hover:text-red-600 transition duration-200">Delete</button>
+                        <input class="text-red-500 hover:text-red-600 transition duration-200 cursor-pointer" type="button" value="Delete">
             </li>
 
 
